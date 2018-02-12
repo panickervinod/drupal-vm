@@ -11,28 +11,45 @@ vagrant_synced_folders:
     type: nfs
 ```
 
-## Disable the Drush make build and site install
+_If you have Drupal VM installed within your codebase, you can also set the `local_path` to a location relative to the `Vagrantfile`. This is the default setup in `default.config.yml`._
 
-Set `build_makefile` and `install_site` to `false`:
+## Disable the Composer project build and site install
+
+Set all the `drupal_build_*` variables and `install_site` to `false`:
 
 ```yaml
-build_makefile:: false
+drupal_build_makefile: false
+drupal_build_composer: false
+drupal_build_composer_project: false
 ...
-install_site: false
+drupal_install_site: false
 ```
 
-If you aren't copying back a database, and want to have Drupal VM run `drush si` for your Drupal site, you can leave `install_site` set to `true` and it will run a site install on your Drupal codebase using the `drupal_*` config variables.
+If you aren't copying back a database, and want to have Drupal VM run `drush si` for your Drupal site, you can leave `drupal_install_site` set to `true` and it will run a site install on your Drupal codebase using the `drupal_*` config variables.
 
-## Update `apache_vhosts`
+## Update `drupal_core_path`
 
-Add your site to `apache_vhosts`, setting the `documentroot` to the same value as the `destination` of the synced folder you configured earlier:
+Set `drupal_core_path` to the same value as the `destination` of the synced folder you configured earlier:
 
 ```yaml
-apache_vhosts:
-  - servername: "local.my-drupal-site.com"
-    documentroot: "/var/www/my-drupal-site"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
+drupal_core_path: "/var/www/my-drupal-site"
+```
+
+This variable will be used for the document root of the webserver.
+
+## Set the domain
+
+By default the domain of your site will be `drupalvm.test` but you can change it by setting `drupal_domain` to the domain of your choice:
+
+```yaml
+drupal_domain: "local.my-drupal-site.com"
+```
+
+If you prefer using your domain as the root of all extra packages installed, ie. `adminer`, `xhprof` and `pimpmylog`, set it as the value of `vagrant_hostname` instead.
+
+```yaml
+vagrant_hostname: "my-drupal-site.com"
+drupal_domain: "{{ vagrant_hostname }}"
 ```
 
 ## Update MySQL info
@@ -41,4 +58,4 @@ If you have your Drupal site configured to use a special database and/or user/pa
 
 ## Build the VM, import your database
 
-Run `vagrant up` to build the VM with your codebase synced into the proper location. Once the VM is created, you can [connect to the MySQL database](../extras/mysql.md) and import your site's database to the Drupal VM, or use a command like `drush sql-sync` to copy a database from another server.
+Run `vagrant up` to build the VM with your codebase synced into the proper location. Once the VM is created, you can [connect to the MySQL database](../configurations/databases-mysql.md) and import your site's database to the Drupal VM, or use a [command like `drush sql-sync`](../extras/drush.md#using-sql-sync) to copy a database from another server.
