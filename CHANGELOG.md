@@ -1,5 +1,110 @@
 # Drupal VM Changelog
 
+
+## 4.9.2 (2019-01-03)
+
+### Breaking Changes
+
+  * Ubuntu 14.04 is still supported as long as the LTS release is receiving security updates, but some functionality may start breaking for Ubuntu 14.04, as more and more upstreams are dropping support for the old Ubuntu version.
+
+### New/changed variables in default.config.yml
+
+  * #1774: `vagrant_box` was changed to `geerlingguy/drupal-vm`. This box is faster to start in all cases, and should work fine even when switching between Apache/Nginx or MySQL/PostgreSQL. You can always override and switch back to `geerlingguy/ubuntu1604` or whatever base box you prefer.
+
+### Improvements
+
+  * #1760: Add test and support for Ubuntu 18.04 Bionic Beaver.
+  * #1883: Drop 'official-ish' support for using Drupal VM for prod.
+  * #1851: Remove Ubuntu 14.04 from test suite as more upstreams are dropping support.
+  * #1774: Switch to default Drupal VM base box for faster provisioning.
+  * #532: Update BigPipe docs slightly.
+  * #1619: Add an example of what to put in secrets.yml.
+  * Updated roles: apache, php-versions, composer, php, java, varnish, elasticsearch, php-pecl, tideways, nginx, security, postgresql
+
+### Bugfixes
+
+  * #1843: Drush 9.5.0 was breaking due to some pathing issues.
+  * #1846: Fixed typo in build-composer.yml that caused composer install to fail.
+  * #1854: Document older Varnish version requirement for CentOS 6.
+  * #1880: Disable audio driver in VirtualBox VM.
+
+
+## 4.9.1 (2018-10-10)
+
+### Breaking Changes
+
+N/A
+
+### New/changed variables in default.config.yml
+
+  * The Devel module dependency in `drupal_composer_dependencies` was changed from `1.x-dev` (which no longer seems to work) to `^1.2`.
+
+### Improvements
+
+  * #1827: Improve Tideways documentation.
+  * #1589: Add name to Ansible provisioner.
+  * #1823: Remove Debian 8 CI test, Debian 9 suffices.
+  * Updated roles: solr, ruby, varnish, nodejs, java, mysql, composer, php, firewall, apache, and many others with fixes for Ansible 2.7+ and linting issues.
+
+### Bugfixes
+
+  * #1761: Fix deprecation warnings in Ansible 2.7.0.
+  * #1822: Update composer role to fix CentOS 7 Composer download bug.
+  * #1743, #1831: Use stable version of Devel via Composer.
+
+
+## 4.9.0 "Creation of Tron" (2018-06-01)
+
+This release improves compatibility with Ansible 2.4, 2.5 and beyond, and updates almost every Ansible role in Drupal VM.
+
+### Breaking Changes
+
+N/A
+
+### New/changed variables in default.config.yml
+
+  - Removed unused `php_xdebug_cli_enable` variable.
+  - Added `php_xdebug_cli_disable: yes`.
+
+### Improvements
+
+  * #619, #1720: Add documentation for using Eclipse and Visual Studio Code with xdebug.
+  * #1552: Better PHP 7.2 compatibility with XDebug.
+  * #1553: Fix use of deprecated 'include' syntax in Ansible playbooks.
+  * #1566: Remove unused `php_xdebug_cli_enable` variable.
+  * #1778: Remove Ansible 2.2 compatibility-related tasks.
+  * Updated roles: selenium, php-tideways, firewall, solr, nginx, drupal console, apache, varnish, postgres, new relic, java, composer, php, mysql, blackfire, elasticsearch, drush, drupal, node.js, php-redis, php-tideways, php-versions, xhprof, redis, security, ruby.
+
+### Bugfixes
+
+  * #1736: Better Ansible version parsing in Vagrantfile.
+  * #1654: Make sure Tideways can be installed.
+  * #1518: Improve use of old versions of Solr on newer OS releases.
+
+
+## 4.8.1 (2018-03-10)
+
+### Breaking Changes
+
+Drupal VM now requires Ansible 2.4+ if you are using the version installed on your host. (Used to require 2.2+).
+
+### New/changed variables in default.config.yml
+
+  * `drupalvm_ansible_version_min` is now `2.4`. Make sure to upgrade if you're on an older version!
+
+### Improvements
+
+  * #1701: Ansible required version is TOO DARN LOW!
+  * #1682: Add documentation for setting up Atom with XDebug.
+  * Updated roles: git, ruby, apache-php-fpm, solr, security, java, git, php.
+
+### Bugfixes
+
+  * #1692: Fix the install-drupal command on the Docker image.
+  * #1704: Ansible version check is done on host even when force_ansible_local is true.
+  * #1708: Selenium paths value in docs should be quoted.
+
+
 ## 4.8.0 "Tower Music / Let Us Pray" (2018-01-30)
 
 This release is all about Drush. Please read my blog post [Drupal VM 4.8 and Drush 9.0.0 - Some major changes](https://www.jeffgeerling.com/blog/2018/drupal-vm-48-and-drush-900-some-major-changes) for details and more background.

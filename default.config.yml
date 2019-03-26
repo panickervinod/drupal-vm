@@ -1,13 +1,14 @@
 ---
 # Available `vagrant_box` values include:
 #   - beet/box (pre-provisioned, based on Ubuntu 16.04)
+#   - geerlingguy/drupal-vm (pre-provisioned, based on Ubuntu 16.04)
 #   - geerlingguy/centos7
 #   - geerlingguy/centos6
 #   - geerlingguy/debian9
 #   - geerlingguy/debian8
+#   - geerlingguy/ubuntu1804
 #   - geerlingguy/ubuntu1604
-#   - geerlingguy/ubuntu1404
-vagrant_box: geerlingguy/ubuntu1604
+vagrant_box: geerlingguy/drupal-vm
 
 vagrant_user: vagrant
 vagrant_synced_folder_default_type: nfs
@@ -47,7 +48,7 @@ vagrant_plugins:
 
 # Minimum required versions.
 drupalvm_vagrant_version_min: '1.8.6'
-drupalvm_ansible_version_min: '2.2'
+drupalvm_ansible_version_min: '2.4'
 
 # Force use of ansible_local provisioner, even if Ansible is installed on host.
 force_ansible_local: false
@@ -70,7 +71,7 @@ drupal_build_composer: false
 drupal_composer_path: "{{ config_dir }}/drupal.composer.json"
 drupal_composer_install_dir: "/var/www/drupalvm/drupal"
 drupal_composer_dependencies:
-  - "drupal/devel:1.x-dev"
+  - "drupal/devel:^1.2"
 
 # Set this to 'true' and 'drupal_build_makefile', 'drupal_build_composer' to 'false'
 # if you are using Composer's create-project as a site deployment strategy.
@@ -321,10 +322,9 @@ pimpmylog_grant_all_privs: true
 # XDebug configuration. XDebug is disabled by default for better performance.
 php_xdebug_default_enable: 0
 php_xdebug_coverage_enable: 0
-php_xdebug_cli_enable: 1
+php_xdebug_cli_disable: yes
 php_xdebug_remote_enable: 1
 php_xdebug_remote_connect_back: 1
-# Use PHPSTORM for PHPStorm, sublime.xdebug for Sublime Text.
 php_xdebug_idekey: PHPSTORM
 php_xdebug_max_nesting_level: 256
 php_xdebug_remote_host: "{{ ansible_default_ipv4.gateway }}"
